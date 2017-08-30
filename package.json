@@ -1,0 +1,16 @@
+{
+  "name": "otrstijucabot",
+  "version": "1.0.0",
+  "description": "A Telegram Bot with Node.js for send email to open called in OTRS service desk",
+  "main": "index.js",
+  "scripts": {
+    "test": "",
+    "start": "node index.js"
+  },
+  "author": "Gabriel Bibiano - Tijuca Alimentos",
+  "license": "ISC",
+  "dependencies": {
+    "nodemailer": "^4.0.1",
+    "telegram-node-bot": "^4.0.5"
+  }
+}
