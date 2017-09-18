@@ -1,5 +1,5 @@
 'use strict'
-
+console.log(this)
 const Telegram = require('telegram-node-bot')
 const nodemailer = require('nodemailer');
 const sendEmail = require('./sendEmail')
