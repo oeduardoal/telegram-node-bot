@@ -1,11 +1,11 @@
 module.exports = (nodemailer, bodyEmail) => {
   let transporter = nodemailer.createTransport({
-      host: 'server.server235.net',
+      host: 'email-ssl.com.br',
       port: 465,
       secure: true,
       auth: {
-          user: 'erp@tijucaalimentos.com.br',
-          pass: 'erp_tijuca741852'
+          user: 'suporte@appstijuca.com.br',
+          pass: 'tijuca_2016_stp'
       }
   });
 
