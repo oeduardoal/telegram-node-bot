@@ -12,6 +12,7 @@ const chatbot = new Telegram.Telegram(TOKEN)
 
 const newCalled = {
   user: "",
+  email:"",
   type: "",
   priority: "",
   problem: ""
@@ -32,10 +33,11 @@ const checkConfirmation = ($) => {
     if(result.confim == 'Sim' || result.confim == 'sim'){
       sendEmail(nodemailer, newCalled)
       $.sendMessage('Chamado confimado! Em breve, entraremos em contato com você.')
-      newCalled.user = ""
-      newCalled.type = ""
+      newCalled.user	 = ""
+      newCalled.type 	 = ""
       newCalled.priority = ""
-      newCalled.problem = ""
+      newCalled.problem  = ""
+      newCalled.email    = ""
     }else{
       $.sendMessage('Chamado cancelado!\nPara abrir um novo chamado digite /start')
     }

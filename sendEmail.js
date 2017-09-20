@@ -10,10 +10,14 @@ module.exports = (nodemailer, bodyEmail) => {
   });
 
   let mailOptions = {
-      from: '"Telegram Bot" <erp@tijucaalimentos.com.br>', 
-      to: 'bibiano@tijucaalimentos.com', 
-      subject: 'Chamado OTRS',
-      html: `${bodyEmail.user}<br>${bodyEmail.problem}`
+      from: '"SUPORTE TI - MESSEJANA" <suporte@appstijuca.com.br>', 
+      to: 'suporte@appstijuca.com.br', 
+      subject: `Novo Chamado OTRS - ${bodyEmail.user}`,
+      html: `
+		Nome do Usuário: ${bodyEmail.user}<br>
+		Problema: ${bodyEmail.problem}<br>
+		Email: ${bodyEmail.email}
+		`
   };
 
   // send mail with defined transport object
