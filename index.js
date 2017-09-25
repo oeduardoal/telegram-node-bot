@@ -7,12 +7,13 @@ const forms       = require('./forms');
 const menus       = require('./menus');
 const TelegramBaseController = Telegram.TelegramBaseController
 const TextCommand = Telegram.TextCommand
-const TOKEN = `445113487:AAG6rCYhk2HGcbvqG1KQIXKlmtyI4vR-5Os`
+const TOKEN = `445113487:AAE8FET984QpOTsLIqEMZTMpRH2NUkAO6v4`
 const chatbot = new Telegram.Telegram(TOKEN,{
   workers: 2
 })
 const ticket = {
   user: "",
+  chatId: "",
   type: "",
   priority: "",
   problem: "",
@@ -20,6 +21,25 @@ const ticket = {
 class MainController extends TelegramBaseController {
 
     checkConfirmation($){
+      $.sendMessage(`Você criou um chamado do tipo ${ticket.type} sobre o seguinte problema\n\n"${ticket.problem}"\n\n`);
+      $.sendMessage(`Deseja enviar o chamado? Sim/sim ou Não/não`);
+      $.waitForRequest
+      .then(($) => {
+        if($.message.text == "Sim" ||$.message.text == "sim"){
+          sendEmail(nodemailer,ticket)
+        }else{
+          this.mainAction($);
+        }
+      })
+    }
+
+    getProblem($){
+        $.sendMessage("Descreva o problema: ");
+        $.waitForRequest
+        .then($ => {
+            ticket.problem = $.message.text;
+            this.checkConfirmation($);
+        })
     }
 
     selectType($){
@@ -28,18 +48,21 @@ class MainController extends TelegramBaseController {
               text: 'Suporte', 
                 callback: (callbackQuery, message) => {
                     ticket.type = "Suporte"
+                    this.getProblem($)
                 }
             },
             {
               text: 'Desenvolvimento', 
                 callback: (callbackQuery, message) => {
                   ticket.type = "Desenvolvimento"
+                  this.getProblem($)
                 }
             },
             {
               text: 'Cancelamento de Nota', 
                 callback: (callbackQuery, message) => {
                   ticket.type = "Cancelamento de nota"
+                  this.getProblem($)
                   // Cod pedido
                     // ou
                   // Cod nota
@@ -65,15 +88,22 @@ class MainController extends TelegramBaseController {
     }
 
     mainAction($){
-      $.sendMessage("Nos ajude a entender o problema. Escreva de forma clara mas não evite detalhes, eles serão importantíssimos para a resolução do problema. Vamos começar? Digite Sim/sim ou Não/não");
-        $.runMenu({
-          message: 'Selecione:',
-          layout: [1,1,1,1],
-          'Sim': () => {
-            this.helpList($)
-          },
-          'Não': () => {}, 
-      })
+
+      ticket.user = `${$.message.chat.firstName} ${$.message.chat.lastName}`;
+      ticket.chatId = $.message.chat.id;
+      console.log($.message.date,ticket)
+      // $.sendMessage("Olá, esse BOT ajudará você a criar um novo chamado para o Suporte da TI.")
+      // setTimeout(function(){
+      //   $.sendMessage("Nos ajude a entender o problema. Escreva de forma clara mas não evite detalhes, eles serão importantíssimos para a resolução do problema. Vamos começar? Digite Sim/sim ou Não/não");
+      // },3000)
+      // $.waitForRequest
+      // .then($ => {
+      //     if($.message.text == "Sim" ||$.message.text == "sim"){
+      //       this.newTicket($)
+      //     }else{
+      //       this.helpList($);
+      //     }
+      // })
     }
 
     handle($){
@@ -83,29 +113,6 @@ class MainController extends TelegramBaseController {
   get routes() {
     return {
       'startCommand': 'mainAction',
-      'helpCommand': 'helpList'
-    }
-  }
-}
-
-class StopController extends TelegramBaseController{
-
-  mainAction($){
-    ticket.user = "";
-    $.sendMessage("Tudo bem! Esse chamado foi cancelado... Nada será enviado. Deseja começar um novo? Sim/sim ou Não/não")
-    $.waitForRequest.then($ => {
-      if($.message.text == "Sim" || $.message.text == "sim"){
-          $.sendMessage("Chamado aberto novamente. /start")
-      }else{
-          $.sendMessage("Até mais.")
-      }    
-    })
-
-  }
-  get routes() {
-    return {
-      'stopCommand': 'mainAction',
-      'helpCommand': 'helpList'
     }
   }
 }
@@ -113,9 +120,6 @@ class StopController extends TelegramBaseController{
 chatbot.router
 .when(
   new TextCommand('/start', 'startCommand'), new MainController()
-)
-.when(
-  new TextCommand('/stop', 'stopCommand'), new StopController()
 )
 .otherwise(new MainController())
 

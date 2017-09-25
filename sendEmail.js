@@ -12,14 +12,13 @@ module.exports = (nodemailer, ticket) => {
   let mailOptions = {
       from: '"SUPORTE TI - MESSEJANA" <suporte@appstijuca.com.br>', 
       to: 'suporte@appstijuca.com.br', 
-      'chat_id': `${ticket.chat_id}`,
+      'chatId': `${ticket.chatId}`,
       subject: `Novo Chamado via TELEGRAM - ${ticket.user}`,
       html: `
     <b>Nome do Usuário:</b> ${ticket.user}<br>
-		<b>Chat ID:</b> ${ticket.chat_id}<br>
+		<b>Chat ID:</b> ${ticket.chatId}<br>
     <b>Tipo de Chamado:</b> ${ticket.type}<br>
     <b>Problema:</b> \n ${ticket.problem} \n<br>
-    <b>Date:</b> ${ticket.sended_at}<br>
 		`
   };
 
