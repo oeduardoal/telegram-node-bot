@@ -27,8 +27,10 @@ class MainController extends TelegramBaseController {
       .then(($) => {
         if($.message.text == "Sim" ||$.message.text == "sim"){
           sendEmail(nodemailer,ticket)
+          $.sendMessage("Enviado!")
         }else{
           this.mainAction($);
+          $.sendMessage("Cancelado!")
         }
       })
     }
@@ -89,21 +91,19 @@ class MainController extends TelegramBaseController {
 
     mainAction($){
 
-      ticket.user = `${$.message.chat.firstName} ${$.message.chat.lastName}`;
-      ticket.chatId = $.message.chat.id;
-      console.log($.message.date,ticket)
-      // $.sendMessage("Olá, esse BOT ajudará você a criar um novo chamado para o Suporte da TI.")
-      // setTimeout(function(){
-      //   $.sendMessage("Nos ajude a entender o problema. Escreva de forma clara mas não evite detalhes, eles serão importantíssimos para a resolução do problema. Vamos começar? Digite Sim/sim ou Não/não");
-      // },3000)
-      // $.waitForRequest
-      // .then($ => {
-      //     if($.message.text == "Sim" ||$.message.text == "sim"){
-      //       this.newTicket($)
-      //     }else{
-      //       this.helpList($);
-      //     }
-      // })
+      $.sendMessage("Olá, esse BOT ajudará você a criar um novo chamado para o Suporte da TI.")
+      setTimeout(function(){
+        $.sendMessage("Nos ajude a entender o problema. Escreva de forma clara mas não evite detalhes, eles serão importantíssimos para a resolução do problema. Vamos começar? Digite Sim/sim ou Não/não");
+      },3000)
+      $.waitForRequest
+      .then($ => {
+          if($.message.text == "Sim" ||$.message.text == "sim"){
+            this.newTicket($)
+          }else{
+            this.helpList($);
+          }
+      })
+
     }
 
     handle($){
