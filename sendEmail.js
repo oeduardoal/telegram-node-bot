@@ -1,4 +1,4 @@
-module.exports = (nodemailer, bodyEmail) => {
+module.exports = (nodemailer, ticket) => {
   let transporter = nodemailer.createTransport({
       host: 'email-ssl.com.br',
       port: 465,
@@ -12,11 +12,14 @@ module.exports = (nodemailer, bodyEmail) => {
   let mailOptions = {
       from: '"SUPORTE TI - MESSEJANA" <suporte@appstijuca.com.br>', 
       to: 'suporte@appstijuca.com.br', 
-      subject: `Novo Chamado OTRS - ${bodyEmail.user}`,
+      'chat_id': `${ticket.chat_id}`,
+      subject: `Novo Chamado via TELEGRAM - ${ticket.user}`,
       html: `
-		Nome do Usuário: ${bodyEmail.user}<br>
-		Problema: ${bodyEmail.problem}<br>
-		Email: ${bodyEmail.email}
+    <b>Nome do Usuário:</b> ${ticket.user}<br>
+		<b>Chat ID:</b> ${ticket.chat_id}<br>
+    <b>Tipo de Chamado:</b> ${ticket.type}<br>
+    <b>Problema:</b> \n ${ticket.problem} \n<br>
+    <b>Date:</b> ${ticket.sended_at}<br>
 		`
   };
 
