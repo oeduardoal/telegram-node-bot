@@ -90,7 +90,8 @@ class MainController extends TelegramBaseController {
     }
 
     mainAction($){
-
+      ticket.user = `${$.message.from.firstName} ${$.message.from.lastName}`
+      ticket.chatId = $.message.chat.id
       $.sendMessage("Olá, esse BOT ajudará você a criar um novo chamado para o Suporte da TI.")
       setTimeout(function(){
         $.sendMessage("Nos ajude a entender o problema. Escreva de forma clara mas não evite detalhes, eles serão importantíssimos para a resolução do problema. Vamos começar? Digite Sim/sim ou Não/não");
