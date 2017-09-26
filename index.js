@@ -22,62 +22,84 @@ class MainController extends TelegramBaseController {
 
     checkConfirmation($){
       $.sendMessage(`Você criou um chamado do tipo ${ticket.type} sobre o seguinte problema\n\n"${ticket.problem}"\n\n`);
-      $.sendMessage(`Deseja enviar o chamado? Sim/sim ou Não/não`);
+      setTimeout(function() {
+        $.sendMessage(`Deseja enviar o chamado? Sim/sim ou Não/não`);
+      }, 1500);
       $.waitForRequest
       .then(($) => {
         if($.message.text == "Sim" ||$.message.text == "sim"){
           sendEmail(nodemailer,ticket)
-          $.sendMessage("Enviado!")
+          $.sendMessage("Enviado! \n\n/novochamado - para iniciar um novo chamado")
         }else{
-          this.mainAction($);
-          $.sendMessage("Cancelado!")
+          $.sendMessage("Cancelado! \n\n/novochamado - para iniciar um novo chamado")
         }
       })
     }
 
     getProblem($){
-        $.sendMessage("Descreva o problema: ");
-        $.waitForRequest
-        .then($ => {
-            ticket.problem = $.message.text;
-            this.checkConfirmation($);
-        })
+      $.sendMessage("Tudo bem, agora descreva o problema: ");
+      $.waitForRequest
+      .then($ => {
+          ticket.problem = $.message.text;
+          this.checkConfirmation($);
+      })
     }
 
     selectType($){
-      let menu = [
+      const menuType = [
             {
-              text: 'Suporte', 
+                text: 'Suporte',
                 callback: (callbackQuery, message) => {
-                    ticket.type = "Suporte"
-                    this.getProblem($)
+                  ticket.type = "Suporte"
+                  let data = { chat_id: $.chatId, message_id: message.messageId };
+                  $.api.editMessageText(` Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
+                  this.getProblem($);
                 }
             },
             {
-              text: 'Desenvolvimento', 
+              text: 'Desenvolvimento',
                 callback: (callbackQuery, message) => {
                   ticket.type = "Desenvolvimento"
-                  this.getProblem($)
+                  let data = { chat_id: $.chatId, message_id: message.messageId };
+                  $.api.editMessageText(` Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
+                  this.getProblem($);
                 }
             },
             {
-              text: 'Cancelamento de Nota', 
-                callback: (callbackQuery, message) => {
-                  ticket.type = "Cancelamento de nota"
-                  this.getProblem($)
-                  // Cod pedido
-                    // ou
-                  // Cod nota
-                  // Data
-                  // Motivo - Denegada ou Outro
-                }
+              text: 'Cancelamento de Nota',
+              callback: (callbackQuery, message) => {
+                ticket.type = "Cancelamento de Nota";
+                let data = { chat_id: $.chatId, message_id: message.messageId };
+                $.api.editMessageText(` Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
+                $.sendMessage("Ainda em construção!")
+                this.getProblem($);
+              }
+              // menu:
+              // [
+              //   {
+              //         text: 'Sim!',
+              //         callback: (callbackQuery, message) => {
+              //           ticket.type = "Suporte";
+              //           let data = { chat_id: $.chatId, message_id: message.messageId };
+              //           $.api.editMessageText(` Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
+              //           this.getProblem($);
+              //         }
+              //     },
+              //     {
+              //         text: 'Voltar',
+              //         callback: () => {
+              //           this.selectType($);
+              //         }
+              //     }
+              // ] 
             }
       ]
       return $.runInlineMenu({
         layout: 2,
+        oneTimeKeyboard: true,
         method: 'sendMessage',
-        params: ['text'],
-        menu: menu
+        params: ['Selecione um tipo de chamado: '],
+        menu: menuType
       })
     }
 
@@ -85,17 +107,22 @@ class MainController extends TelegramBaseController {
       this.selectType($);
     }
 
+    listCommands($){
+      $.sendMessage("TIJUCA ALIMENTOS\n\nEsse BOT foi criado para dar agilidade a abertura de chamados junto a equipe de suporte. Use com cuidado! 😁 \n\n/novochamado - Pra iniciar um novo chamado!")
+    }
+
     helpList($){
-      $.sendMessage("Não entendi o que você quis dizer. Mas tudo bem, podemos começar de novo. \n\n /start - para iniciar um novo chamado ")
+      $.sendMessage("Não entendi o que você quis dizer. Mas tudo bem, podemos começar de novo. \n\n /novochamado - para iniciar um novo chamado ")
     }
 
     mainAction($){
-      ticket.user = `${$.message.from.firstName} ${$.message.from.lastName}`
-      ticket.chatId = $.message.chat.id
-      $.sendMessage("Olá, esse BOT ajudará você a criar um novo chamado para o Suporte da TI.")
+      
+      ticket.user = `${$.message.from.firstName} ${$.message.from.lastName}`;
+      ticket.chatId = $.message.chat.id;
       setTimeout(function(){
         $.sendMessage("Nos ajude a entender o problema. Escreva de forma clara mas não evite detalhes, eles serão importantíssimos para a resolução do problema. Vamos começar? Digite Sim/sim ou Não/não");
-      },3000)
+      },1500)
+
       $.waitForRequest
       .then($ => {
           if($.message.text == "Sim" ||$.message.text == "sim"){
@@ -113,7 +140,9 @@ class MainController extends TelegramBaseController {
 
   get routes() {
     return {
-      'startCommand': 'mainAction',
+      'startCommand': 'listCommands',
+      'newTicketCommand' : 'mainAction',
+      'problemCommand' : 'getProblem',
     }
   }
 }
@@ -121,6 +150,12 @@ class MainController extends TelegramBaseController {
 chatbot.router
 .when(
   new TextCommand('/start', 'startCommand'), new MainController()
+)
+.when(
+  new TextCommand('/novochamado', 'newTicketCommand'), new MainController()
+)
+.when(
+  new TextCommand('/getProblem', 'problemCommand'), new MainController()
 )
 .otherwise(new MainController())
 
