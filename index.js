@@ -7,7 +7,7 @@ const forms       = require('./forms');
 const menus       = require('./menus');
 const TelegramBaseController = Telegram.TelegramBaseController
 const TextCommand = Telegram.TextCommand
-const TOKEN = `445113487:AAE8FET984QpOTsLIqEMZTMpRH2NUkAO6v4`
+const TOKEN = `457248917:AAHTK6Ec5gLbuTj5lvFKyL6hlGZEPGhpozQ`
 const chatbot = new Telegram.Telegram(TOKEN,{
   workers: 2
 })
