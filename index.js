@@ -15,6 +15,10 @@ const ticket = {
   user: "",
   chatId: "",
   type: "",
+  cancel: {
+    by: "",
+    cod:"",
+  },
   priority: "",
   problem: "",
 };
@@ -45,6 +49,9 @@ class MainController extends TelegramBaseController {
       })
     }
 
+    getProblemCancelamento($){
+      console.log(ticket);
+    }
     selectType($){
       const menuType = [
             {
@@ -67,31 +74,41 @@ class MainController extends TelegramBaseController {
             },
             {
               text: 'Cancelamento de Nota',
-              callback: (callbackQuery, message) => {
-                ticket.type = "Cancelamento de Nota";
-                let data = { chat_id: $.chatId, message_id: message.messageId };
-                $.api.editMessageText(` Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
-                $.sendMessage("Ainda em construção!")
-                this.getProblem($);
-              }
-              // menu:
-              // [
-              //   {
-              //         text: 'Sim!',
-              //         callback: (callbackQuery, message) => {
-              //           ticket.type = "Suporte";
-              //           let data = { chat_id: $.chatId, message_id: message.messageId };
-              //           $.api.editMessageText(` Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
-              //           this.getProblem($);
-              //         }
-              //     },
-              //     {
-              //         text: 'Voltar',
-              //         callback: () => {
-              //           this.selectType($);
-              //         }
-              //     }
-              // ] 
+              message: 'Enviar Código',
+              menu: [
+                  {
+                      text: 'do pedido',
+                      callback: (callbackQuery, message) => {
+                        ticket.cancel.by = "Pedido";
+                        ticket.type = "Cancelamento de Nota";
+                        
+                        let data = { chat_id: $.chatId, message_id: message.messageId };
+                        
+                        $.api.editMessageText(`Digite o código do Pedido: `, data);
+                        $.waitForRequest
+                        .then($ => {
+                            ticket.cancel.cod = $.message.text;
+                            this.getProblemCancelamento($);
+                        })
+
+                      }
+                  },
+                  {
+                      text: 'da nota',
+                      callback: (callbackQuery, message) => {
+                        ticket.cancel.by = "Nota";
+                        ticket.type = "Cancelamento de Nota";
+                        
+                        let data = { chat_id: $.chatId, message_id: message.messageId };
+                        $.api.editMessageText(`Digite o codigo da nota: `, data);
+                        $.waitForRequest
+                        .then($ => {
+                            ticket.cancel.cod = $.message.text;
+                            this.getProblemCancelamento($);
+                        })
+                      }
+                  }
+              ]
             }
       ]
       return $.runInlineMenu({
@@ -104,6 +121,7 @@ class MainController extends TelegramBaseController {
     }
 
     newTicket($){
+      
       this.selectType($);
     }
 
