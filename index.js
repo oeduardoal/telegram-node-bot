@@ -7,11 +7,15 @@ const forms       = require('./forms');
 const menus       = require('./menus');
 const TelegramBaseController = Telegram.TelegramBaseController
 const TextCommand = Telegram.TextCommand
-const TOKEN = `445113487:AAE8FET984QpOTsLIqEMZTMpRH2NUkAO6v4`
-// const TOKEN = `457248917:AAHTK6Ec5gLbuTj5lvFKyL6hlGZEPGhpozQ`
+
+// const TOKEN = `445113487:AAE8FET984QpOTsLIqEMZTMpRH2NUkAO6v4`
+
+const TOKEN = `457248917:AAHTK6Ec5gLbuTj5lvFKyL6hlGZEPGhpozQ`
+
 const chatbot = new Telegram.Telegram(TOKEN,{
   workers: 2
 })
+
 const ticket = {
   user: "",
   chatId: "",
@@ -19,10 +23,12 @@ const ticket = {
   cancel: {
     by: "",
     cod:"",
-    reason:""
+    reason:"",
+    date:""
   },
   problem: "",
 };
+
 class MainController extends TelegramBaseController {
 
     checkConfirmation($){
@@ -32,7 +38,7 @@ class MainController extends TelegramBaseController {
 
       (ticket.type == "Cancelamento de Nota")
       ?
-      mess = `Você criou um chamado para ${ticket.type}\n${ticket.cancel.by}: ${ticket.cancel.cod}\nMotivo: ${ticket.cancel.reason}`
+      mess = `Você criou um chamado para ${ticket.type}\n${ticket.cancel.by}: ${ticket.cancel.cod}\nMotivo: ${ticket.cancel.reason}\nData de entrega: ${ticket.cancel.date}`
       :  
       mess = `Você criou um chamado para ${ticket.type}\nProblema: ${ticket.problem}`
 
@@ -43,12 +49,27 @@ class MainController extends TelegramBaseController {
       }, 1500);
       $.waitForRequest
       .then(($) => {
-        if($.message.text == "Sim" ||$.message.text == "sim"){
+        if($.message.text == "Sim" || $.message.text == "sim"){
           sendEmail(nodemailer,ticket)
           $.sendMessage("Enviado! \n\n/novochamado - para iniciar um novo chamado")
         }else{
           $.sendMessage("Cancelado! \n\n/novochamado - para iniciar um novo chamado")
         }
+      })
+    }
+
+    getThedate($){
+      $.sendMessage("Entre com a data de entrega\nNeste formato dd/mm/yyyy");
+      $.waitForRequest
+      .then($ => {
+          let regExp = /^(0[1-9]|[1-2]\d|3[0-1])\/(0[1-9]|1[0-2])\/\d{4}$/;
+          if(!regExp.test($.message.text)){
+            this.getThedate($);
+          }
+          else{
+            ticket.cancel.date = $.message.text;
+            this.getReasonCancellation($);
+          }
       })
     }
 
@@ -101,7 +122,7 @@ class MainController extends TelegramBaseController {
       $.waitForRequest
       .then($ => {
           ticket.cancel.cod = $.message.text;
-          this.getReasonCancellation($);
+          this.getThedate($);
           
       })
     }
@@ -113,7 +134,7 @@ class MainController extends TelegramBaseController {
                 callback: (callbackQuery, message) => {
                   ticket.type = "Suporte"
                   let data = { chat_id: $.chatId, message_id: message.messageId };
-                  $.api.editMessageText(` Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
+                  $.api.editMessageText(`Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
                   this.getProblem($);
                 }
             },
@@ -122,13 +143,14 @@ class MainController extends TelegramBaseController {
                 callback: (callbackQuery, message) => {
                   ticket.type = "Desenvolvimento"
                   let data = { chat_id: $.chatId, message_id: message.messageId };
-                  $.api.editMessageText(` Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
+                  $.api.editMessageText(`Um novo chamado de ${ticket.user} para ${ticket.type}`, data);
                   this.getProblem($);
                 }
             },
             {
               text: 'Cancelamento de Nota',
-              message: 'Enviar Código',
+              message: 'Enviar Código para cancelamento: ',
+              layout: 2,
               menu: [
                   {
                       text: 'do pedido',
@@ -204,6 +226,7 @@ class MainController extends TelegramBaseController {
     }
   }
 }
+
 
 chatbot.router
 .when(
