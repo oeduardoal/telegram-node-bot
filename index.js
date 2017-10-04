@@ -2,11 +2,14 @@
 
 const Telegram    = require('telegram-node-bot')
 const nodemailer  = require('nodemailer');
-const sendEmail   = require('./sendEmail')
 const forms       = require('./forms');
 const menus       = require('./menus');
 const TelegramBaseController = Telegram.TelegramBaseController
 const TextCommand = Telegram.TextCommand
+const request     = require("request");
+
+const OTRS         = require("./core");
+const { ticket } = require("./core");
 
 // const TOKEN = `445113487:AAE8FET984QpOTsLIqEMZTMpRH2NUkAO6v4`
 
@@ -16,26 +19,12 @@ const chatbot = new Telegram.Telegram(TOKEN,{
   workers: 2
 })
 
-const ticket = {
-  user: "",
-  chatId: "",
-  type: "",
-  cancel: {
-    by: "",
-    cod:"",
-    reason:"",
-    date:""
-  },
-  problem: "",
-};
 
 class MainController extends TelegramBaseController {
 
     checkConfirmation($){
 
       let mess;
-
-
       (ticket.type == "Cancelamento de Nota")
       ?
       mess = `Você criou um chamado para ${ticket.type}\n${ticket.cancel.by}: ${ticket.cancel.cod}\nMotivo: ${ticket.cancel.reason}\nData de entrega: ${ticket.cancel.date}`
@@ -43,15 +32,26 @@ class MainController extends TelegramBaseController {
       mess = `Você criou um chamado para ${ticket.type}\nProblema: ${ticket.problem}`
 
       $.sendMessage(mess);
-      
+
       setTimeout(function() {
         $.sendMessage(`Deseja enviar o chamado? Sim/sim ou Não/não`);
       }, 1500);
       $.waitForRequest
       .then(($) => {
         if($.message.text == "Sim" || $.message.text == "sim"){
-          sendEmail(nodemailer,ticket)
-          $.sendMessage("Enviado! \n\n/novochamado - para iniciar um novo chamado")
+
+          OTRS.newTicket(ticket)
+          .then((data) => {
+            
+            $.sendMessage("Ticket Criado! \n\n/novochamado - para iniciar um novo chamado")
+
+            OTRS.getTicket(data)
+            .then((data)=>{
+              console.log(data);
+            })
+
+          })
+
         }else{
           $.sendMessage("Cancelado! \n\n/novochamado - para iniciar um novo chamado")
         }
@@ -218,11 +218,29 @@ class MainController extends TelegramBaseController {
       this.helpList($);
     }
 
+    teste($){
+      OTRS.newTicket(ticket)
+      .then((data) => {
+        console.log("Resolve",data);
+        OTRS.getTicket(data)
+        .then((dat) => {
+          console.log(dat);
+        })
+        .catch((er) => {
+          console.log(er);
+        })
+      })
+      .catch((err) => {
+        console.log("Reject",err);
+      })
+    }
+
   get routes() {
     return {
       'startCommand': 'listCommands',
       'newTicketCommand' : 'mainAction',
       'problemCommand' : 'getProblem',
+      'testCommand'     : 'teste'
     }
   }
 }
@@ -238,5 +256,9 @@ chatbot.router
 .when(
   new TextCommand('/getProblem', 'problemCommand'), new MainController()
 )
+.when(
+  new TextCommand('/teste', 'testCommand'), new MainController()
+)
+
 .otherwise(new MainController())
 
