@@ -12,7 +12,7 @@ exports.ConfigNewTicket = {
 exports.ConfigGetTicket = {
     options: {
         method: 'GET',
-        uri: `${defines.OTRS_URL}/nph-genericinterface.pl/Webservice/${defines.REST_NAME}/Ticket`,
+        uri: `${defines.OTRS_URL}/nph-genericinterface.pl/Webservice/${defines.REST_NAME}/Ticket`,        
     }
 }
 exports.defines = defines;

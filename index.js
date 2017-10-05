@@ -221,10 +221,11 @@ class MainController extends TelegramBaseController {
     teste($){
       OTRS.newTicket(ticket)
       .then((data) => {
-        console.log("Resolve",data);
+        $.sendMessage(`Seu chamado foi criado!\n\nTicket#${data.TicketNumber} - ${ticket.type} (TELEGRAM)`);
+
         OTRS.getTicket(data)
         .then((dat) => {
-          console.log(dat);
+          $.sendMessage(`Sua mensagem foi anexada ao chamado! \n\n Nota: \n ${dat.Article[0].Body}`);
         })
         .catch((er) => {
           console.log(er);
