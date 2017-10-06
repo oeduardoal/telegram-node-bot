@@ -1,9 +1,6 @@
 'use strict'
 
 const Telegram    = require('telegram-node-bot')
-const nodemailer  = require('nodemailer');
-const forms       = require('./forms');
-const menus       = require('./menus');
 const TelegramBaseController = Telegram.TelegramBaseController
 const TextCommand = Telegram.TextCommand
 const request     = require("request");
@@ -39,17 +36,19 @@ class MainController extends TelegramBaseController {
       $.waitForRequest
       .then(($) => {
         if($.message.text == "Sim" || $.message.text == "sim"){
-
           OTRS.newTicket(ticket)
           .then((data) => {
-            
-            $.sendMessage("Ticket Criado! \n\n/novochamado - para iniciar um novo chamado")
-
-            OTRS.getTicket(data)
-            .then((data)=>{
-              console.log(data);
+            $.sendMessage(`Seu chamado foi criado!\n\nTicket#${data.TicketNumber} - ${ticket.type} (TELEGRAM)`);
+            OTRS.getTicket(data.TicketID)
+            .then((dat) => {
+              $.sendMessage(`Sua mensagem foi anexada ao chamado! \n\n${dat.Article[1].Body}`);
             })
-
+            .catch((er) => {
+              console.log("Reject",er);
+            })
+          })
+          .catch((err) => {
+            console.log("Reject",err);
           })
 
         }else{
@@ -222,13 +221,12 @@ class MainController extends TelegramBaseController {
       OTRS.newTicket(ticket)
       .then((data) => {
         $.sendMessage(`Seu chamado foi criado!\n\nTicket#${data.TicketNumber} - ${ticket.type} (TELEGRAM)`);
-
-        OTRS.getTicket(data)
+        OTRS.getTicket(data.TicketID)
         .then((dat) => {
-          $.sendMessage(`Sua mensagem foi anexada ao chamado! \n\n Nota: \n ${dat.Article[0].Body}`);
+          $.sendMessage(`Sua mensagem foi anexada ao chamado! \n\n${dat.Article[1].Body}`);
         })
         .catch((er) => {
-          console.log(er);
+          console.log("Reject",er);
         })
       })
       .catch((err) => {

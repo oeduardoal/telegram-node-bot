@@ -5,10 +5,8 @@ const request           = require("request");
  * @param {object} ticket The Object Ticket
  */
 
-module.exports = (data) => {
+module.exports = (id) => {
     return new Promise((resolve,reject) => {
-
-        let id = data.TicketID;
         
         ConfigGetTicket.options.uri = `${ConfigGetTicket.options.uri}/${id}?`;
 

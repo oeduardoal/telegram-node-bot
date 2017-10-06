@@ -7,10 +7,10 @@ const request           = require("request");
 module.exports = (ticket) => {
     return new Promise((resolve,reject) => {
 
-        ticket.type = "Suporte";
-        ticket.user = "Eduardo";
-        ticket.chatId = "123123213";
-        ticket.problem = "sadsadsadsadsasd";
+        // ticket.type = "Suporte";
+        // ticket.user = "Eduardo";
+        // ticket.chatId = "123123213";
+        // ticket.problem = "sadsadsadsadsasd";
 
         let _ticket = {
                 "Ticket": {
