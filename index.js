@@ -38,10 +38,12 @@ class MainController extends TelegramBaseController {
         if($.message.text == "Sim" || $.message.text == "sim"){
           OTRS.newTicket(ticket)
           .then((data) => {
+            console.log(data);
             $.sendMessage(`Seu chamado foi criado!\n\nTicket#${data.TicketNumber} - ${ticket.type} (TELEGRAM)`);
             OTRS.getTicket(data.TicketID)
             .then((dat) => {
-              $.sendMessage(`Sua mensagem foi anexada ao chamado! \n\n${dat.Article[1].Body}`);
+              console.log(dat);
+              $.sendMessage(`Sua mensagem foi anexada ao chamado! \n\n${dat.Article[0].Body}`);
             })
             .catch((er) => {
               console.log("Reject",er);
@@ -218,12 +220,16 @@ class MainController extends TelegramBaseController {
     }
 
     teste($){
+      
+      ticket.user = `${$.message.from.firstName} ${$.message.from.lastName}`;
+      ticket.chatId = $.message.chat.id;
+      
       OTRS.newTicket(ticket)
       .then((data) => {
-        $.sendMessage(`Seu chamado foi criado!\n\nTicket#${data.TicketNumber} - ${ticket.type} (TELEGRAM)`);
+        console.log(Object.keys(data));
         OTRS.getTicket(data.TicketID)
         .then((dat) => {
-          $.sendMessage(`Sua mensagem foi anexada ao chamado! \n\n${dat.Article[1].Body}`);
+          console.log(Object.keys(dat));
         })
         .catch((er) => {
           console.log("Reject",er);
