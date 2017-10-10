@@ -8,10 +8,13 @@ const { ticket }  = require("./core");
 
 // const TOKEN = `445113487:AAE8FET984QpOTsLIqEMZTMpRH2NUkAO6v4`
 
+const ForceReply  = require("./core/force");
+
 const TOKEN = `457248917:AAHTK6Ec5gLbuTj5lvFKyL6hlGZEPGhpozQ`
 
 const chatbot = new Telegram.Telegram(TOKEN,{
-  workers: 2
+  workers: 2,
+  force: new ForceReply()
 })
 
 
@@ -214,7 +217,10 @@ class MainController extends TelegramBaseController {
     }
 
     handle($){
-      this.helpList($);
+      // this.helpList($);
+      // let a = new ForceReply();      
+      // console.log(a);
+
     }
 
     teste($){
