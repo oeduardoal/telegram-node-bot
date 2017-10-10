@@ -1,12 +1,12 @@
 {
-  "name": "otrstijucabot",
+  "name": "SuporteTijucaBot",
   "version": "1.0.0",
   "description": "A Telegram Bot with Node.js open Tickets in OTRS",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node ./index.js"
   },
-  "author": "Gabriel Bibiano - Tijuca Alimentos",
+  "author": "Eduardo Almeida - Tijuca Alimentos",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^4.0.0",
