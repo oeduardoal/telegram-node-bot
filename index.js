@@ -1,5 +1,4 @@
-// const Telegram    = require('telegram-node-bot')
-import Telegram from 'telegram-node-bot'
+const Telegram    = require('telegram-node-bot')
 const TelegramBaseController = Telegram.TelegramBaseController
 const TextCommand = Telegram.TextCommand
 const request     = require("request");
