@@ -1,12 +1,11 @@
-'use strict'
-
-const Telegram    = require('telegram-node-bot')
+// const Telegram    = require('telegram-node-bot')
+import Telegram from 'telegram-node-bot'
 const TelegramBaseController = Telegram.TelegramBaseController
 const TextCommand = Telegram.TextCommand
 const request     = require("request");
 
-const OTRS         = require("./core");
-const { ticket } = require("./core");
+const OTRS        = require("./core");
+const { ticket }  = require("./core");
 
 // const TOKEN = `445113487:AAE8FET984QpOTsLIqEMZTMpRH2NUkAO6v4`
 
@@ -220,7 +219,6 @@ class MainController extends TelegramBaseController {
     }
 
     teste($){
-      
       ticket.user = `${$.message.from.firstName} ${$.message.from.lastName}`;
       ticket.chatId = $.message.chat.id;
       
