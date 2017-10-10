@@ -9,7 +9,6 @@
   "author": "Eduardo Almeida - Tijuca Alimentos",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^4.0.0",
     "request": "^2.83.0",
     "telegram-node-bot": "^4.0.5"
   }
