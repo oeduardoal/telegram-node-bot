@@ -8,9 +8,9 @@ const request           = require("request");
 module.exports = (id) => {
     return new Promise((resolve,reject) => {
         
-        ConfigGetTicket.options.uri = `${ConfigGetTicket.options.uri}/${id}?`;
+        let opts = ConfigGetTicket(id);
 
-        request.get(`${ConfigGetTicket.options.uri}`, {qs:{UserLogin: `${defines.USER}`,Password: `${defines.PASS}`}},
+        request.get(`${opts.uri}`, {qs:{UserLogin: `${defines.USER}`,Password: `${defines.PASS}`}},
             (err,res,body) => {
             body = JSON.parse(body);
             (body.Ticket) ?
@@ -21,3 +21,4 @@ module.exports = (id) => {
         
     })
 }
+

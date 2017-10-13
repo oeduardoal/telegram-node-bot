@@ -37,7 +37,7 @@ class MainController extends TelegramBaseController {
           OTRS.newTicket(ticket)
           .then((data) => {
             console.log(data);
-            $.sendMessage(`Seu chamado foi criado!\n\nTicket#${data.TicketNumber} - ${ticket.type} (TELEGRAM)`);
+            $.sendMessage(`Seu chamado foi criado!\n\n[TICKET#${data.TicketNumber}|${data.TicketID}] - ${ticket.type} (TELEGRAM)`);
             OTRS.getTicket(data.TicketID)
             .then((dat) => {
               console.log(dat);
@@ -103,7 +103,7 @@ class MainController extends TelegramBaseController {
             })
           }
         }
-      ];
+      ];TicketID
       return $.runInlineMenu({
         layout: 2,
         oneTimeKeyboard: true,
@@ -214,7 +214,44 @@ class MainController extends TelegramBaseController {
     }
 
     handle($){
-      this.helpList($);
+
+      ticket.user = `${$.message.from.firstName} ${$.message.from.lastName}`;
+      ticket.chatId = $.message.chat.id;
+
+      if($.message.replyToMessage != null){
+
+        let note = {};
+
+        let teste = "";
+        let p1 = $.message.replyToMessage.text.split("|");
+        let TicketID = p1[1].split("]")[0];
+        
+        note.ID = TicketID;
+        note.text = $.message.text;
+        
+        (TicketID) ? 
+          OTRS.newNote(note,ticket)
+          .then((data) => {
+            $.sendMessage("Sua mensagem foi enviada!");
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+        :
+          $.sendMessage("Sua mensagem foi enviada!");
+        
+
+
+        // console.log($.message.replyToMessage.text)
+        // console.log($.message.text)
+        // $.sendMessage("Mensagem enviada");
+      }else{
+        this.helpList($);
+      }
+      // console.log($.message.replyToMessage.text)
+      // console.log($.message.text)
+      // $.sendMessage("Não entendi o que você disse...",{reply_markup: JSON.stringify({force_reply: true})});
+      
     }
 
     teste($){
@@ -223,10 +260,12 @@ class MainController extends TelegramBaseController {
       
       OTRS.newTicket(ticket)
       .then((data) => {
-        console.log(Object.keys(data));
+        console.log(data);
+        $.sendMessage(`Seu chamado foi criado!\n\n[TICKET#${data.TicketNumber}|${data.TicketID}] - ${ticket.type} (TELEGRAM)`);
         OTRS.getTicket(data.TicketID)
         .then((dat) => {
-          console.log(Object.keys(dat));
+          console.log(dat);
+          $.sendMessage(`Sua mensagem foi anexada ao chamado! \n\n${dat.Article[0].Body}`);
         })
         .catch((er) => {
           console.log("Reject",er);
