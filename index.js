@@ -6,13 +6,13 @@ const request     = require("request");
 const OTRS        = require("./core");
 const { ticket }  = require("./core");
 
-// const TOKEN = `445113487:AAE8FET984QpOTsLIqEMZTMpRH2NUkAO6v4`
+const TOKEN = `445113487:AAE8FET984QpOTsLIqEMZTMpRH2NUkAO6v4`
 
 
-const TOKEN = `457248917:AAHTK6Ec5gLbuTj5lvFKyL6hlGZEPGhpozQ`
+//const TOKEN = `457248917:AAHTK6Ec5gLbuTj5lvFKyL6hlGZEPGhpozQ`
 
 const chatbot = new Telegram.Telegram(TOKEN,{
-  workers: 2,
+  workers: 8
 })
 
 
@@ -104,7 +104,7 @@ class MainController extends TelegramBaseController {
             })
           }
         }
-      ];TicketID
+      ];
       return $.runInlineMenu({
         layout: 2,
         oneTimeKeyboard: true,

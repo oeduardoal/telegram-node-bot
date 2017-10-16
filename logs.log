@@ -1,0 +1,447 @@
+
+> SuporteTijucaBot@1.0.0 start /var/www/telegram-node-bot
+> node ./index.js
+
+[36m[log]   [0m
+Telegram Master started, 8 CPUs found, 8 workers will start
+
+
+[36m[log]   [0m
+WebAdmin  started at localhost:7777
+
+
+[36m[log]   [0m
+Telegram Worker started at 29200 PID
+
+
+[36m[log]   [0m
+Telegram Worker started at 29205 PID
+
+
+[36m[log]   [0m
+Telegram Worker started at 29216 PID
+
+
+[36m[log]   [0m
+Telegram Worker started at 29211 PID
+
+
+[36m[log]   [0m
+Telegram Worker started at 29206 PID
+
+
+[36m[log]   [0m
+Telegram Worker started at 29231 PID
+
+
+[36m[log]   [0m
+Telegram Worker started at 29221 PID
+
+
+[36m[log]   [0m
+Telegram Worker started at 29226 PID
+
+
+{ TicketNumber: '2017101365000116',
+  ArticleID: '1235',
+  TicketID: '704' }
+{ EscalationTime: '0',
+  Priority: '1 Normal',
+  DynamicField: [ { Value: '234666362', Name: 'CHATID' } ],
+  Age: 3,
+  State: 'open',
+  TypeID: '1',
+  UnlockTimeout: '0',
+  StateID: '4',
+  Type: 'Suporte',
+  EscalationUpdateTime: '0',
+  ChangeBy: '1',
+  TicketID: '704',
+  TicketNumber: '2017101365000116',
+  EscalationResponseTime: '0',
+  GroupID: '12',
+  Created: '2017-10-13 14:21:15',
+  RealTillTimeNotUsed: '0',
+  EscalationSolutionTime: '0',
+  Lock: 'unlock',
+  StateType: 'open',
+  CreateTimeUnix: '1507915275',
+  Owner: 'root@localhost',
+  CreateBy: '1',
+  SLAID: '',
+  ResponsibleID: '1',
+  UntilTime: 0,
+  Title: 'Suporte (TELEGRAM)',
+  Article: 
+   [ { MimeType: 'text/plain',
+       EscalationTime: '0',
+       Service: '',
+       SenderTypeID: '1',
+       Priority: '1 Normal',
+       Age: 3,
+       State: 'open',
+       TypeID: '1',
+       SLA: '',
+       ContentCharset: 'utf8',
+       Type: 'Suporte',
+       StateID: '4',
+       Charset: 'utf8',
+       EscalationUpdateTime: '0',
+       To: 'Atendimento',
+       TicketID: '704',
+       TicketNumber: '2017101365000116',
+       EscalationResponseTime: '0',
+       AgeTimeUnix: 2,
+       Created: '2017-10-13 14:21:16',
+       RealTillTimeNotUsed: '0',
+       Lock: 'unlock',
+       EscalationSolutionTime: '0',
+       CreatedBy: '1',
+       StateType: 'open',
+       Owner: 'root@localhost',
+       CreateTimeUnix: '1507915275',
+       InReplyTo: '',
+       ArticleID: '1235',
+       SLAID: null,
+       ArticleTypeID: '8',
+       ResponsibleID: '1',
+       ContentType: 'text/plain; charset=utf8',
+       UntilTime: 0,
+       Body: 'Nome do Usuário: Alexandre Porto de França\nChat ID: 234666362\nTipo de Chamado: Suporte\nProblema: Estão peidando na sala de Estágio, gostaria de solicitar a suspensão\ndessa rotina peidal! Favor providenciar um bom ar e melhorar o ambiente nasal!\n\n',
+       Title: 'Suporte (TELEGRAM)',
+       Cc: '',
+       MessageID: '',
+       Changed: '2017-10-13 14:21:17',
+       PriorityID: '1',
+       ArticleType: 'webrequest',
+       IncomingTime: '1507915276',
+       SenderType: 'agent',
+       Responsible: 'root@localhost',
+       QueueID: '5',
+       CustomerUserID: 'telegram.user',
+       ServiceID: null,
+       FromRealname: 'Telegram BOT',
+       ReplyTo: '',
+       OwnerID: '1',
+       Queue: 'Atendimento',
+       ToRealname: 'Atendimento',
+       CustomerID: 'TIJUCA',
+       Subject: 'NOTA: <Alexandre Porto de França> Suporte',
+       LockID: '1',
+       From: '"Telegram BOT" <bot@appstijuca.com.br>',
+       References: '' } ],
+  Changed: '2017-10-13 14:21:17',
+  PriorityID: '1',
+  Responsible: 'root@localhost',
+  QueueID: '5',
+  CustomerUserID: 'telegram.user',
+  ServiceID: '',
+  OwnerID: '1',
+  Queue: 'Atendimento',
+  CustomerID: 'TIJUCA',
+  ArchiveFlag: 'n',
+  LockID: '1' }
+{ user: 'Alexandre Porto de França',
+  chatId: 234666362,
+  type: '',
+  cancel: { by: '', cod: '', reason: '', date: '' },
+  problem: '' }
+{"TicketNumber":"2017101365000116","ArticleID":"1237","TicketID":"704"}
+[33m[warn]   [0m
+Got Internal server error from Telegram. Body: { ok: false,
+  error_code: 500,
+  description: 'Internal server error: restart' }
+
+
+[36m[log]   [0m
+Retry request TelegramApiRequest {
+  _method: 'getUpdates',
+  _params: { timeout: 50, offset: 593604226 },
+  _multipart: undefined }
+
+
+[31m[error]   [0m
+api request error: Telegram returned some html instead of json. Body: <html>
+<head><title>502 Bad Gateway</title></head>
+<body bgcolor="white">
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.10.0</center>
+</body>
+</html>
+
+Error: SyntaxError: Unexpected token < in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at IncomingMessage.response.on (/var/www/telegram-node-bot/node_modules/tiny_request/lib/network.js:71:40)
+    at emitNone (events.js:110:20)
+    at IncomingMessage.emit (events.js:207:7)
+    at endReadableNT (_stream_readable.js:1059:12)
+    at _combinedTickCallback (internal/process/next_tick.js:138:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+
+
+[36m[log]   [0m
+Retry request TelegramApiRequest {
+  _method: 'getUpdates',
+  _params: { timeout: 50, offset: 593604226 },
+  _multipart: undefined }
+
+
+[31m[error]   [0m
+api request error: Telegram returned some html instead of json. Body: <html>
+<head><title>502 Bad Gateway</title></head>
+<body bgcolor="white">
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.10.0</center>
+</body>
+</html>
+
+Error: SyntaxError: Unexpected token < in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at IncomingMessage.response.on (/var/www/telegram-node-bot/node_modules/tiny_request/lib/network.js:71:40)
+    at emitNone (events.js:110:20)
+    at IncomingMessage.emit (events.js:207:7)
+    at endReadableNT (_stream_readable.js:1059:12)
+    at _combinedTickCallback (internal/process/next_tick.js:138:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+
+
+[36m[log]   [0m
+Retry request TelegramApiRequest {
+  _method: 'getUpdates',
+  _params: { timeout: 50, offset: 593604226 },
+  _multipart: undefined }
+
+
+[31m[error]   [0m
+api request error: Telegram returned some html instead of json. Body: <html>
+<head><title>502 Bad Gateway</title></head>
+<body bgcolor="white">
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.10.0</center>
+</body>
+</html>
+
+Error: SyntaxError: Unexpected token < in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at IncomingMessage.response.on (/var/www/telegram-node-bot/node_modules/tiny_request/lib/network.js:71:40)
+    at emitNone (events.js:110:20)
+    at IncomingMessage.emit (events.js:207:7)
+    at endReadableNT (_stream_readable.js:1059:12)
+    at _combinedTickCallback (internal/process/next_tick.js:138:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+
+
+[36m[log]   [0m
+Retry request TelegramApiRequest {
+  _method: 'getUpdates',
+  _params: { timeout: 50, offset: 593604226 },
+  _multipart: undefined }
+
+
+[31m[error]   [0m
+api request error: Telegram returned some html instead of json. Body: <html>
+<head><title>502 Bad Gateway</title></head>
+<body bgcolor="white">
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.10.0</center>
+</body>
+</html>
+
+Error: SyntaxError: Unexpected token < in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at IncomingMessage.response.on (/var/www/telegram-node-bot/node_modules/tiny_request/lib/network.js:71:40)
+    at emitNone (events.js:110:20)
+    at IncomingMessage.emit (events.js:207:7)
+    at endReadableNT (_stream_readable.js:1059:12)
+    at _combinedTickCallback (internal/process/next_tick.js:138:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+
+
+[36m[log]   [0m
+Retry request TelegramApiRequest {
+  _method: 'getUpdates',
+  _params: { timeout: 50, offset: 593604226 },
+  _multipart: undefined }
+
+
+[31m[error]   [0m
+api request error: Telegram returned some html instead of json. Body: <html>
+<head><title>502 Bad Gateway</title></head>
+<body bgcolor="white">
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.10.0</center>
+</body>
+</html>
+
+Error: SyntaxError: Unexpected token < in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at IncomingMessage.response.on (/var/www/telegram-node-bot/node_modules/tiny_request/lib/network.js:71:40)
+    at emitNone (events.js:110:20)
+    at IncomingMessage.emit (events.js:207:7)
+    at endReadableNT (_stream_readable.js:1059:12)
+    at _combinedTickCallback (internal/process/next_tick.js:138:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+
+
+[36m[log]   [0m
+Retry request TelegramApiRequest {
+  _method: 'getUpdates',
+  _params: { timeout: 50, offset: 593604226 },
+  _multipart: undefined }
+
+
+[31m[error]   [0m
+api request error: Telegram returned some html instead of json. Body: <html>
+<head><title>502 Bad Gateway</title></head>
+<body bgcolor="white">
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.10.0</center>
+</body>
+</html>
+
+Error: SyntaxError: Unexpected token < in JSON at position 0
+    at JSON.parse (<anonymous>)
+    at IncomingMessage.response.on (/var/www/telegram-node-bot/node_modules/tiny_request/lib/network.js:71:40)
+    at emitNone (events.js:110:20)
+    at IncomingMessage.emit (events.js:207:7)
+    at endReadableNT (_stream_readable.js:1059:12)
+    at _combinedTickCallback (internal/process/next_tick.js:138:11)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
+
+
+[36m[log]   [0m
+Retry request TelegramApiRequest {
+  _method: 'getUpdates',
+  _params: { timeout: 50, offset: 593604226 },
+  _multipart: undefined }
+
+
+[31m[error]   [0m
+Network error: Error: getaddrinfo EAI_AGAIN api.telegram.org:443
+    at Object._errnoException (util.js:1041:11)
+    at errnoException (dns.js:58:15)
+    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:95:26)
+request TelegramApiRequest {
+  _method: 'getUpdates',
+  _params: { timeout: 50, offset: 593604226 },
+  _multipart: undefined }
+
+
+[36m[log]   [0m
+Retry request TelegramApiRequest {
+  _method: 'getUpdates',
+  _params: { timeout: 50, offset: 593604226 },
+  _multipart: undefined }
+
+
+{ TicketNumber: '2017101665000012',
+  ArticleID: '1240',
+  TicketID: '707' }
+{ EscalationTime: '0',
+  Priority: '1 Normal',
+  DynamicField: [ { Value: '449968487', Name: 'CHATID' } ],
+  Age: 2,
+  State: 'open',
+  TypeID: '2',
+  UnlockTimeout: '0',
+  StateID: '4',
+  Type: 'Cancelamento de Nota',
+  EscalationUpdateTime: '0',
+  ChangeBy: '1',
+  TicketID: '707',
+  TicketNumber: '2017101665000012',
+  EscalationResponseTime: '0',
+  GroupID: '12',
+  Created: '2017-10-16 14:13:48',
+  RealTillTimeNotUsed: '0',
+  EscalationSolutionTime: '0',
+  Lock: 'unlock',
+  StateType: 'open',
+  CreateTimeUnix: '1508174028',
+  Owner: 'root@localhost',
+  CreateBy: '1',
+  SLAID: '',
+  ResponsibleID: '1',
+  UntilTime: 0,
+  Title: 'Cancelamento de Nota (TELEGRAM)',
+  Article: 
+   [ { MimeType: 'text/plain',
+       EscalationTime: '0',
+       Service: '',
+       SenderTypeID: '1',
+       Priority: '1 Normal',
+       Age: 2,
+       State: 'open',
+       TypeID: '2',
+       SLA: '',
+       ContentCharset: 'utf8',
+       Type: 'Cancelamento de Nota',
+       StateID: '4',
+       Charset: 'utf8',
+       EscalationUpdateTime: '0',
+       To: 'Atendimento',
+       TicketID: '707',
+       TicketNumber: '2017101665000012',
+       EscalationResponseTime: '0',
+       AgeTimeUnix: 1,
+       Created: '2017-10-16 14:13:49',
+       RealTillTimeNotUsed: '0',
+       Lock: 'unlock',
+       EscalationSolutionTime: '0',
+       CreatedBy: '1',
+       StateType: 'open',
+       Owner: 'root@localhost',
+       CreateTimeUnix: '1508174028',
+       InReplyTo: '',
+       ArticleID: '1240',
+       SLAID: null,
+       ArticleTypeID: '8',
+       ResponsibleID: '1',
+       ContentType: 'text/plain; charset=utf8',
+       UntilTime: 0,
+       Body: 'Nome do Usuário: Gabriel Bibiano\nChat ID: 449968487\nTipo de Chamado: Cancelamento de Nota\nMotivo: Jdudjshsus\nCódigo (Nota): 8383883838838\nData de Entrega:  22/10/2017\n',
+       Title: 'Cancelamento de Nota (TELEGRAM)',
+       Cc: '',
+       MessageID: '',
+       Changed: '2017-10-16 14:13:49',
+       PriorityID: '1',
+       ArticleType: 'webrequest',
+       IncomingTime: '1508174029',
+       SenderType: 'agent',
+       Responsible: 'root@localhost',
+       QueueID: '5',
+       CustomerUserID: 'telegram.user',
+       ServiceID: null,
+       FromRealname: 'Telegram BOT',
+       ReplyTo: '',
+       OwnerID: '1',
+       Queue: 'Atendimento',
+       ToRealname: 'Atendimento',
+       CustomerID: 'TIJUCA',
+       Subject: 'NOTA: <Gabriel Bibiano> Cancelamento de Nota',
+       LockID: '1',
+       From: '"Telegram BOT" <bot@appstijuca.com.br>',
+       References: '' } ],
+  Changed: '2017-10-16 14:13:49',
+  PriorityID: '1',
+  Responsible: 'root@localhost',
+  QueueID: '5',
+  CustomerUserID: 'telegram.user',
+  ServiceID: '',
+  OwnerID: '1',
+  Queue: 'Atendimento',
+  CustomerID: 'TIJUCA',
+  ArchiveFlag: 'n',
+  LockID: '1' }
+{ user: 'Gabriel Bibiano',
+  chatId: 449968487,
+  type: '',
+  cancel: { by: '', cod: '', reason: '', date: '' },
+  problem: '' }
+{"TicketNumber":"2017101665000012","ArticleID":"1241","TicketID":"707"}
+{ user: 'Gabriel Bibiano',
+  chatId: 449968487,
+  type: '',
+  cancel: { by: '', cod: '', reason: '', date: '' },
+  problem: '' }
+{"TicketNumber":"2017101665000012","ArticleID":"1244","TicketID":"707"}
